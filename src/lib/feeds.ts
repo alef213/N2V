@@ -79,6 +79,10 @@ export async function fetchSubstackPosts(substackUrl: string): Promise<Post[]> {
   try {
     const res = await fetch(`${substackUrl.replace(/\/$/, '')}/feed`, {
       signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; N2VBot/1.0; +https://n2ved.com)',
+        'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+      },
     });
     if (!res.ok) return [];
     const xml = await res.text();
