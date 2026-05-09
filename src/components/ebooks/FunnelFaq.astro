@@ -1,0 +1,69 @@
+---
+// No props — FAQ copy is fixed per spec
+const faqs: Array<{ q: string; a: string }> = [
+  {
+    q: "Is this really free?",
+    a: "Yes. No credit card, no upsell at checkout. The only ask is your email so Mike can send the weekly classroom notes. Unsubscribe in one click.",
+  },
+  {
+    q: "Will I get spammed?",
+    a: "No. One email on Sundays with a short teaching note. That\u2019s it.",
+  },
+  {
+    q: "Is this for my child\u2019s specific diagnosis?",
+    a: "The system works across ADHD, autism, dyslexia, OCD, anxiety, and dysgraphia. It\u2019s not diagnosis-specific \u2014 it\u2019s gifts-specific.",
+  },
+];
+---
+
+<section class="bg-paper py-[var(--space-section)] px-4">
+  <div class="max-w-2xl mx-auto">
+
+    <!-- Eyebrow -->
+    <p class="text-sm font-semibold uppercase tracking-wider text-teal mb-4 text-center">
+      Quick questions
+    </p>
+
+    <!-- H2 -->
+    <h2
+      class="font-serif text-navy leading-tight mb-10 text-center"
+      style="font-size: var(--fs-h2);"
+    >
+      Before you sign up
+    </h2>
+
+    <!-- FAQ items -->
+    <div class="flex flex-col gap-3">
+      {faqs.map(({ q, a }) => (
+        <details class="group border border-offwhite rounded-lg overflow-hidden">
+          <summary
+            class="
+              flex items-center justify-between gap-4
+              px-6 py-5 cursor-pointer
+              bg-paper hover:bg-offwhite transition-colors duration-150
+              font-semibold text-navy select-none
+              list-none
+            "
+            style="font-size: var(--fs-body);"
+          >
+            <span>{q}</span>
+            <!-- Chevron rotates when open -->
+            <span
+              class="shrink-0 text-teal transition-transform duration-200 group-open:rotate-180"
+              aria-hidden="true"
+            >
+              ▾
+            </span>
+          </summary>
+          <div
+            class="px-6 pb-6 pt-2 text-ink leading-relaxed bg-paper"
+            style="font-size: var(--fs-body);"
+          >
+            {a}
+          </div>
+        </details>
+      ))}
+    </div>
+
+  </div>
+</section>

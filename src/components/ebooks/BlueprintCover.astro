@@ -1,0 +1,58 @@
+---
+/*
+ * BlueprintCover — single owner of the thumbnail resolution rule for Blueprints.
+ *
+ * Callers (EbookCard, FunnelHero) pass a `thumbnailFile` from Markdown frontmatter
+ * plus a `thumbnailTone` (used for the PlaceholderImage fallback). This component
+ * owns:
+ *
+ *   1. The `import.meta.glob` lookup that lets Astro optimise the image at build time.
+ *   2. The `charcoal → navy` safeTone mapping (PlaceholderImage doesn't accept charcoal).
+ *   3. The decision between rendering the real <Image> or the <PlaceholderImage>.
+ *
+ * Adding a third Blueprint surface (e.g. a related-content card) becomes a
+ * one-line use of this component instead of a third copy of the resolver.
+ */
+
+import { Image } from 'astro:assets';
+import PlaceholderImage from '../PlaceholderImage.astro';
+
+type ToneIn = 'navy' | 'teal' | 'green' | 'gold' | 'charcoal';
+type ToneOut = 'navy' | 'teal' | 'green' | 'gold';
+
+interface Props {
+  thumbnailFile?: string;
+  thumbnailTone: ToneIn;
+  label: string;
+  width: number;
+  height: number;
+  quality?: number;
+  class?: string;
+}
+
+const {
+  thumbnailFile,
+  thumbnailTone,
+  label,
+  width,
+  height,
+  quality = 85,
+  class: className = 'w-full object-cover',
+} = Astro.props;
+
+const safeTone: ToneOut = thumbnailTone === 'charcoal' ? 'navy' : thumbnailTone;
+
+const thumbMap = import.meta.glob<{ default: ImageMetadata }>(
+  '../../../public/images/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
+const thumbKey = thumbnailFile
+  ? `../../../public/images/${thumbnailFile}`
+  : undefined;
+const thumbSrc = thumbKey && thumbMap[thumbKey]?.default;
+---
+
+{thumbSrc
+  ? <Image src={thumbSrc} alt={label} width={width} height={height} quality={quality} class={className} />
+  : <PlaceholderImage w={width} h={height} label={label} tone={safeTone} />
+}

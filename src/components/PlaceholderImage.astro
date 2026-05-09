@@ -1,0 +1,72 @@
+---
+interface Props {
+  w: number;
+  h: number;
+  label: string;
+  tone?: 'navy' | 'teal' | 'green' | 'gold';
+  /** Default true — when false, render a clean coloured box with the label
+   *  only (no diagonal PLACEHOLDER watermark). Used by the System section
+   *  on /; kept on for any "this asset is still missing" surface. */
+  showWatermark?: boolean;
+}
+
+const { w, h, label, tone = 'navy', showWatermark = true } = Astro.props;
+
+const toneMap: Record<string, string> = {
+  navy:  '#0F2847',
+  teal:  '#2D8F8F',
+  green: '#6B9B7A',
+  gold:  '#C9A96E',
+};
+
+const bg = toneMap[tone];
+const midX = w / 2;
+const midY = h / 2;
+---
+
+<svg
+  width={w}
+  height={h}
+  viewBox={`0 0 ${w} ${h}`}
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label={showWatermark ? `Placeholder: ${label}` : label}
+  style="display:block;max-width:100%;height:auto;"
+>
+  <!-- Background -->
+  <rect width={w} height={h} fill={bg} />
+
+  {showWatermark && (
+    <!-- Diagonal PLACEHOLDER watermark -->
+    <text
+      x={midX}
+      y={midY}
+      text-anchor="middle"
+      dominant-baseline="middle"
+      transform={`rotate(-45, ${midX}, ${midY})`}
+      font-family="'Inter', ui-sans-serif, system-ui, sans-serif"
+      font-size={Math.max(20, Math.floor(w / 8))}
+      font-weight="700"
+      fill="white"
+      opacity="0.30"
+      letter-spacing="0.15em"
+    >
+      PLACEHOLDER
+    </text>
+  )}
+
+  <!-- Centered label -->
+  <text
+    x={midX}
+    y={midY}
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="'Fraunces', ui-serif, Georgia, serif"
+    font-size={Math.max(14, Math.floor(w / 16))}
+    font-weight="600"
+    fill="white"
+    opacity="0.90"
+  >
+    {label}
+  </text>
+</svg>

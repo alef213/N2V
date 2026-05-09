@@ -1,0 +1,43 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import EbookCard from './EbookCard.astro';
+
+interface Props {
+  /** Optional pre-fetched + filtered collection. If omitted, EbookList fetches
+   *  the full ebooks collection itself. Used by /thanks pages that have already
+   *  loaded the collection to filter out the current entry. */
+  ebooks?: CollectionEntry<'ebooks'>[];
+  /** Wrapping section background. Defaults to offwhite (the standalone /blueprints
+   *  list); thanks pages may pass 'paper' to match their layout. */
+  tone?: 'paper' | 'offwhite';
+  /** Max width for the grid container. Defaults match the standalone list. */
+  maxWidth?: string;
+}
+
+const { ebooks: ebooksProp, tone = 'offwhite', maxWidth = 'max-w-4xl' } = Astro.props;
+
+const rawEbooks = ebooksProp ?? (await getCollection('ebooks'));
+const ebooks = [...rawEbooks].sort((a, b) => a.data.order - b.data.order);
+
+const sectionBg = tone === 'paper' ? 'bg-paper' : 'bg-offwhite';
+---
+
+<section class={`${sectionBg} py-[var(--space-section)] px-4`}>
+  <div class={`${maxWidth} mx-auto`}>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {ebooks.map((ebook) => (
+        <EbookCard
+          slug={ebook.id}
+          title={ebook.data.title}
+          subtitle={ebook.data.subtitle}
+          length={ebook.data.length}
+          readTime={ebook.data.readTime}
+          thumbnailTone={ebook.data.thumbnailTone}
+          highlights={ebook.data.highlights ?? []}
+          thumbnailFile={ebook.data.thumbnailFile}
+          showCta={true}
+        />
+      ))}
+    </div>
+  </div>
+</section>

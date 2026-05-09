@@ -1,0 +1,33 @@
+---
+import Button from '../Button.astro';
+
+interface Props {
+  substackUrl: string;
+}
+
+const { substackUrl } = Astro.props;
+---
+
+<section class="bg-offwhite py-[var(--space-section)] px-4">
+  <div class="max-w-3xl mx-auto text-center">
+    <p class="text-sm font-semibold uppercase tracking-wider text-teal mb-4">
+      The Field Notes
+    </p>
+
+    <h1
+      class="font-serif text-navy leading-tight mb-6"
+      style="font-size: var(--fs-h1);"
+    >
+      35 years of classroom observations, in writing.
+    </h1>
+
+    <p class="text-muted leading-relaxed mb-8 max-w-xl mx-auto" style="font-size: var(--fs-body);">
+      Weekly essays on building self-directed learners — the habits, the mindset shifts,
+      the parent-side moves that actually work.
+    </p>
+
+    <Button href={substackUrl} variant="primary" size="lg" external>
+      Subscribe on Substack
+    </Button>
+  </div>
+</section>

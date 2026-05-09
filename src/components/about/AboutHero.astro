@@ -1,0 +1,48 @@
+---
+import Button from '../Button.astro';
+import { Image } from 'astro:assets';
+import mikeHeadshot from '../../../public/images/mike-headshot.jpg';
+---
+
+<section class="bg-paper py-[var(--space-section)] px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+      <!-- Left: text -->
+      <div class="flex flex-col gap-6">
+        <p class="text-sm font-semibold uppercase tracking-wider text-teal">About Mike</p>
+
+        <h1
+          class="font-serif text-navy leading-tight"
+          style="font-size: var(--fs-h1);"
+        >
+          35 years in the classroom. 20 of them figuring out what the system gets wrong about neurodivergent kids.
+        </h1>
+
+        <p class="text-charcoal leading-relaxed" style="font-size: 1.125rem;">
+          I'm Mike Johnson, I've taught thousands of kids the public-school system had given up on —
+          and watched them become engineers, scientists, tradesmen, and yes, a few valedictorians.
+          The system that did it is the system I'm teaching parents now.
+        </p>
+
+        <div class="flex flex-wrap gap-4 pt-2">
+          <Button href="/blueprints/strength-based/" variant="primary" size="md">Read the Strength-Based article</Button>
+          <Button href="/blueprints" variant="ghost" size="md">Explore our Free Blueprints</Button>
+        </div>
+      </div>
+
+      <!-- Right: Mike's headshot -->
+      <div class="flex justify-center lg:justify-end">
+        <Image
+          src={mikeHeadshot}
+          alt="Mike Johnson — N2V founder, 35-year educator"
+          width={460}
+          height={613}
+          quality={85}
+          class="rounded-md shadow-lg ring-1 ring-charcoal/10 object-cover w-full max-w-[460px] h-auto"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>

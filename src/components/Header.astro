@@ -1,0 +1,125 @@
+---
+const navLinks = [
+  { label: 'About',            href: '/about' },
+  { label: 'Blog',             href: '/blog' },
+  { label: 'Videos',           href: '/videos' },
+  { label: 'Free Blueprints',  href: '/blueprints' },
+];
+
+const externalLinks = [
+  { label: 'Adaptive Tutor', href: 'https://www.socraticiq.org', external: true },
+];
+---
+
+<header class="sticky top-0 z-50 bg-paper border-b border-offwhite">
+  <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+
+    <!-- Wordmark -->
+    <a
+      href="/"
+      class="font-serif text-navy leading-tight hover:text-teal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 flex items-baseline gap-2"
+      aria-label="N2V — Neurodivergent to Valedictorian — home"
+    >
+      <span class="font-bold tracking-tight text-xl sm:text-2xl">N2V</span>
+      <span class="hidden sm:inline text-xs uppercase tracking-[0.18em] text-muted">
+        Neurodivergent&nbsp;→&nbsp;Valedictorian
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav aria-label="Primary navigation" class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm font-medium text-charcoal hover:text-teal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 rounded"
+        >
+          {link.label}
+        </a>
+      ))}
+      {externalLinks.map((link) => (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm font-medium text-charcoal hover:text-teal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 rounded"
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Hamburger button (mobile) -->
+    <button
+      id="menu-toggle"
+      type="button"
+      class="md:hidden flex items-center justify-center w-10 h-10 rounded text-navy hover:text-teal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open navigation menu"
+    >
+      <!-- Hamburger icon -->
+      <svg id="icon-open" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M3 6h16M3 11h16M3 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <!-- Close icon (hidden by default) -->
+      <svg id="icon-close" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="hidden">
+        <path d="M5 5l12 12M17 5L5 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div
+    id="mobile-menu"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Navigation menu"
+    class="hidden md:hidden border-t border-offwhite bg-paper"
+  >
+    <nav class="max-w-5xl mx-auto px-4 py-4 flex flex-col gap-1">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-base font-medium text-charcoal hover:text-teal hover:bg-offwhite px-3 py-2 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-inset"
+        >
+          {link.label}
+        </a>
+      ))}
+      {externalLinks.map((link) => (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-base font-medium text-charcoal hover:text-teal hover:bg-offwhite px-3 py-2 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-inset"
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle') as HTMLButtonElement;
+  const menu   = document.getElementById('mobile-menu') as HTMLDivElement;
+  const iconOpen  = document.getElementById('icon-open') as HTMLElement;
+  const iconClose = document.getElementById('icon-close') as HTMLElement;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    menu.classList.toggle('hidden', isOpen);
+    iconOpen.classList.toggle('hidden', !isOpen);
+    iconClose.classList.toggle('hidden', isOpen);
+  });
+
+  // Close drawer when a nav link is activated
+  menu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    });
+  });
+</script>

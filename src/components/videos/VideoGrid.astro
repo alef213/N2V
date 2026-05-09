@@ -1,0 +1,122 @@
+---
+import PlaceholderImage from '../PlaceholderImage.astro';
+import type { VideoEntry } from '../../lib/feeds.ts';
+
+interface Props {
+  videos: VideoEntry[];
+  source: 'rss' | 'fallback';
+  channelUrl: string;
+}
+
+const { videos, source, channelUrl } = Astro.props;
+
+function formatDate(dateStr: string): string {
+  try {
+    return new Date(dateStr).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+function videoHref(videoId: string, channelUrl: string): string {
+  if (videoId === '#' || videoId === '') return channelUrl;
+  return `https://www.youtube.com/watch?v=${videoId}`;
+}
+---
+
+<section
+  class="bg-paper py-[var(--space-section)] px-4"
+  data-source={source}
+>
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {videos.map((video) => {
+        const href = videoHref(video.videoId, channelUrl);
+        return (
+          <article class="flex flex-col gap-3">
+            {/* Thumbnail container — 16:9 aspect ratio */}
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block relative rounded-lg overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2"
+              aria-label={`Watch: ${video.title}`}
+            >
+              {video.thumbnailUrl ? (
+                <img
+                  src={video.thumbnailUrl}
+                  alt={`Thumbnail for: ${video.title}`}
+                  width={480}
+                  height={270}
+                  loading="lazy"
+                  decoding="async"
+                  style="display:block;width:100%;height:auto;"
+                />
+              ) : (
+                <PlaceholderImage
+                  w={480}
+                  h={270}
+                  label="Video thumbnail"
+                  tone="navy"
+                />
+              )}
+
+              {/* Play triangle overlay */}
+              <div
+                class="absolute inset-0 flex items-center justify-center pointer-events-none"
+                aria-hidden="true"
+              >
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style="filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));"
+                >
+                  <circle cx="24" cy="24" r="24" fill="rgba(0,0,0,0.40)" />
+                  <polygon
+                    points="19,14 38,24 19,34"
+                    fill="#C9A96E"
+                  />
+                </svg>
+              </div>
+
+              {/* Duration badge — bottom-right */}
+              {video.duration && (
+                <span
+                  class="absolute bottom-2 right-2 bg-charcoal text-offwhite text-xs font-semibold px-2 py-0.5 rounded"
+                  aria-label={`Duration: ${video.duration}`}
+                >
+                  {video.duration}
+                </span>
+              )}
+            </a>
+
+            {/* Card body */}
+            <p class="text-xs font-semibold uppercase tracking-wider text-muted">
+              {formatDate(video.published)}
+            </p>
+            <h3
+              class="font-serif text-navy leading-snug"
+              style="font-size: var(--fs-h3);"
+            >
+              {video.title}
+            </h3>
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-teal font-medium text-sm underline underline-offset-4 hover:decoration-2 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 mt-auto"
+            >
+              Watch on YouTube &rarr;
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>

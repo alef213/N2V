@@ -1,0 +1,46 @@
+---
+interface Props {
+  length: string;
+  subtitle: string;
+  bullets: string[];
+}
+
+const { length, subtitle, bullets } = Astro.props;
+---
+
+<section class="bg-paper py-[var(--space-section)] px-4">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Eyebrow -->
+    <p class="text-sm font-semibold uppercase tracking-wider text-teal mb-4">
+      What's inside
+    </p>
+
+    <!-- H2 — length + promise from subtitle -->
+    <h2
+      class="font-serif text-navy leading-tight mb-10"
+      style="font-size: var(--fs-h2);"
+    >
+      {length}. {subtitle}.
+    </h2>
+
+    <!-- Bullet list -->
+    <ul class="flex flex-col gap-5">
+      {bullets.map((bullet) => (
+        <li class="flex gap-4 items-start">
+          <span
+            class="shrink-0 w-6 h-6 rounded-full bg-teal text-offwhite flex items-center justify-center mt-0.5"
+            style="font-size: 0.75rem; font-weight: 700;"
+            aria-hidden="true"
+          >
+            ✓
+          </span>
+          <span class="text-ink leading-relaxed" style="font-size: var(--fs-body);">
+            {bullet}
+          </span>
+        </li>
+      ))}
+    </ul>
+
+  </div>
+</section>

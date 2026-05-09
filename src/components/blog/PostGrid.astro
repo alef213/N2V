@@ -1,0 +1,78 @@
+---
+import PlaceholderImage from '../PlaceholderImage.astro';
+import type { Post } from '../../lib/feeds.ts';
+
+interface Props {
+  posts: Post[];
+  source: 'rss' | 'fallback';
+}
+
+const { posts, source } = Astro.props;
+
+/**
+ * Format ISO date string (YYYY-MM-DD or RFC-2822) to "Month D, YYYY"
+ */
+function formatDate(raw: string): string {
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return raw;
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+---
+
+<section
+  class="bg-paper py-[var(--space-section)] px-4"
+  data-source={source}
+>
+  <div class="max-w-6xl mx-auto">
+    {source === 'fallback' && (
+      <p class="text-sm text-muted text-center mb-8 italic">
+        Live posts from Substack will appear here once the feed is connected.
+      </p>
+    )}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {posts.map((post) => (
+        <article class="bg-paper border border-offwhite rounded-lg overflow-hidden flex flex-col hover:border-navy hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
+          <!-- Thumbnail -->
+          <div class="flex-shrink-0">
+            <PlaceholderImage w={480} h={280} label="Post thumbnail" tone="teal" />
+          </div>
+
+          <!-- Card body -->
+          <div class="p-6 flex flex-col gap-3 flex-1">
+            <!-- Date eyebrow -->
+            <p class="text-sm font-semibold uppercase tracking-wider text-teal">
+              {formatDate(post.pubDate)}
+            </p>
+
+            <!-- Title -->
+            <h3
+              class="font-serif text-navy leading-snug"
+              style="font-size: var(--fs-h3);"
+            >
+              {post.title}
+            </h3>
+
+            <!-- Excerpt — capped at 2 lines via CSS -->
+            <p
+              class="text-muted leading-relaxed text-sm flex-1"
+              style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;"
+            >
+              {post.excerpt}
+            </p>
+
+            <!-- CTA link -->
+            <a
+              href={post.link}
+              target={post.link !== '#' ? '_blank' : undefined}
+              rel={post.link !== '#' ? 'noopener' : undefined}
+              class="text-teal font-medium text-sm underline underline-offset-4 hover:decoration-2 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 mt-auto self-start"
+            >
+              Read on Substack →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

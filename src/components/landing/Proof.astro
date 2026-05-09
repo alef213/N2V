@@ -1,0 +1,85 @@
+---
+const stats = [
+  { figure: '35', label: 'Years teaching' },
+  { figure: '20', label: 'Years in learning support' },
+  { figure: '1,000+', label: 'kids whose trajectory changed' },
+] as const;
+
+const testimonials = [
+  {
+    quote:
+      "As a parent of a neurodivergent child, I constantly felt like nothing was working. Within a few months of applying Mike's approach, my child went from shutting down during homework to completing assignments independently and even taking pride in their progress.",
+    name: 'Samantha',
+    role: 'Parent',
+  },
+  {
+    quote:
+      "We've worked with many students on the spectrum, and it's rare to see both academic and behavioral growth at the same time — but with Mike's systems and help, we saw students improve grades while becoming more engaged, communicative, and self-directed in the classroom.",
+    name: 'Warren',
+    role: 'Educator',
+  },
+  {
+    quote:
+      "Growing up with autism, school always felt overwhelming and frustrating. Mike taught me how to break things down in a way that made sense, and over time I went from struggling to keep up to graduating with strong grades and real confidence in my abilities — and eventually owning my own business.",
+    name: 'Robin',
+    role: 'Former student',
+  },
+] as const;
+---
+
+<section class="bg-paper py-[var(--space-section)] px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Eyebrow -->
+    <p class="text-sm font-semibold uppercase tracking-widest text-teal mb-8">
+      Track record
+    </p>
+
+    <!-- Pull-quote -->
+    <blockquote
+      class="font-serif text-navy leading-tight max-w-3xl mb-12"
+      style="font-size: var(--fs-h2);"
+    >
+      <span class="text-gold text-5xl leading-none select-none" aria-hidden="true">&ldquo;</span>
+      Kids I started with who couldn't read are now engineers and valedictorians.
+      The system works — regardless of diagnosis.
+      <span class="text-gold text-5xl leading-none select-none" aria-hidden="true">&rdquo;</span>
+    </blockquote>
+
+    <!-- Stat row -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-offwhite pt-10 mb-16">
+      {stats.map((stat) => (
+        <div class="flex flex-col gap-1">
+          <span
+            class="font-serif text-navy font-semibold leading-none"
+            style="font-size: var(--fs-display);"
+          >
+            {stat.figure}
+          </span>
+          <span class="text-muted text-sm leading-snug uppercase tracking-wide">
+            {stat.label}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Testimonials -->
+    <p class="text-sm font-semibold uppercase tracking-widest text-teal mb-6">
+      Parents, teachers, and former students
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {testimonials.map((t) => (
+        <figure class="bg-offwhite border-l-4 border-gold p-6 flex flex-col gap-4 h-full">
+          <blockquote class="text-charcoal text-base leading-relaxed flex-1">
+            &ldquo;{t.quote}&rdquo;
+          </blockquote>
+          <figcaption class="text-sm">
+            <span class="font-serif font-semibold text-navy block">{t.name}</span>
+            <span class="text-muted uppercase tracking-wide text-xs">{t.role}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+  </div>
+</section>

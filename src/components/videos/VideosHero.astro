@@ -1,0 +1,33 @@
+---
+import Button from '../Button.astro';
+
+interface Props {
+  channelUrl: string;
+}
+
+const { channelUrl } = Astro.props;
+---
+
+<section class="bg-navy py-[var(--space-section)] px-4">
+  <div class="max-w-5xl mx-auto">
+    <p class="text-sm font-semibold uppercase tracking-wider text-gold mb-4">
+      The Classroom Channel
+    </p>
+    <h1
+      class="font-serif text-offwhite leading-tight mb-6 max-w-2xl"
+      style="font-size: var(--fs-h1);"
+    >
+      See the system in motion.
+    </h1>
+    <p
+      class="text-offwhite opacity-80 leading-relaxed max-w-xl mb-8"
+      style="font-size: var(--fs-body);"
+    >
+      Short explainers, parent walkthroughs, and real classroom breakdowns — the
+      easiest way to learn the method is to watch me use it.
+    </p>
+    <Button href={channelUrl} variant="gold" size="lg">
+      Subscribe on YouTube
+    </Button>
+  </div>
+</section>

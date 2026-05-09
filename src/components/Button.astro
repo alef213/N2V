@@ -1,0 +1,61 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost' | 'link' | 'inverse' | 'gold';
+  size?: 'md' | 'lg';
+  external?: boolean;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  ariaLabel,
+} = Astro.props;
+
+const isExternal = external || /^https?:\/\//.test(href);
+
+const sizeClasses: Record<string, string> = {
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+
+const variantClasses: Record<string, string> = {
+  primary:
+    'bg-navy text-offwhite font-semibold rounded ' +
+    'border-b-2 border-transparent ' +
+    'hover:border-gold transition-colors duration-200 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2',
+  ghost:
+    'bg-transparent text-navy font-semibold rounded ' +
+    'border-2 border-navy ' +
+    'hover:bg-navy hover:text-offwhite transition-colors duration-200 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2',
+  link:
+    'text-teal font-medium underline underline-offset-4 ' +
+    'hover:decoration-2 transition-all duration-150 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2',
+  inverse:
+    'bg-offwhite text-navy font-semibold rounded ' +
+    'border-b-2 border-transparent ' +
+    'hover:border-gold transition-colors duration-200 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2',
+  gold:
+    'bg-gold text-navy font-semibold rounded ' +
+    'border-b-2 border-transparent ' +
+    'hover:border-navy transition-colors duration-200 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2',
+};
+---
+
+<a
+  href={href}
+  class={`inline-block ${sizeClasses[size]} ${variantClasses[variant]}`}
+  target={isExternal ? '_blank' : undefined}
+  rel={isExternal ? 'noopener noreferrer' : undefined}
+  aria-label={ariaLabel}
+>
+  <slot />
+</a>

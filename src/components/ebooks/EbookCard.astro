@@ -1,0 +1,80 @@
+---
+import Button from '../Button.astro';
+import BlueprintCover from './BlueprintCover.astro';
+
+interface Props {
+  slug: string;
+  title: string;
+  subtitle: string;
+  length: string;
+  readTime: string;
+  thumbnailTone: 'navy' | 'teal' | 'green' | 'gold' | 'charcoal';
+  highlights: string[];
+  thumbnailFile?: string;
+  showCta?: boolean;
+}
+
+const {
+  slug,
+  title,
+  subtitle,
+  length,
+  readTime,
+  thumbnailTone,
+  highlights,
+  thumbnailFile,
+  showCta = true,
+} = Astro.props;
+
+// Link to the funnel landing page, not directly to the thanks page
+const funnelHref = `/blueprints/${slug}/`;
+---
+
+<article class="bg-paper border border-offwhite rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200">
+  <!-- Book cover — real thumbnail when available, placeholder otherwise -->
+  <a href={funnelHref} aria-label={`See ${title}`} class="block">
+    <BlueprintCover
+      thumbnailFile={thumbnailFile}
+      thumbnailTone={thumbnailTone}
+      label={title}
+      width={480}
+      height={600}
+    />
+  </a>
+
+  <div class="p-6 flex flex-col gap-4 flex-1">
+    <!-- Eyebrow: length + readTime -->
+    <p class="text-sm font-semibold uppercase tracking-wider text-teal">
+      {length} · {readTime}
+    </p>
+
+    <!-- Title + Subtitle -->
+    <div>
+      <h3 class="font-serif text-navy leading-snug mb-1" style="font-size: var(--fs-h3);">
+        {title}
+      </h3>
+      <p class="text-muted leading-snug" style="font-size: var(--fs-small);">
+        {subtitle}
+      </p>
+    </div>
+
+    <!-- Highlights -->
+    <ul class="flex flex-col gap-2 flex-1">
+      {highlights.slice(0, 3).map((point) => (
+        <li class="flex gap-2 text-ink" style="font-size: var(--fs-small);">
+          <span class="text-teal mt-0.5 shrink-0" aria-hidden="true">&#x2022;</span>
+          <span>{point}</span>
+        </li>
+      ))}
+    </ul>
+
+    <!-- CTA -->
+    {showCta && (
+      <div class="pt-2">
+        <Button href={funnelHref} variant="primary" size="md">
+          Explore this Strategy
+        </Button>
+      </div>
+    )}
+  </div>
+</article>

@@ -1,0 +1,62 @@
+---
+import BlueprintCover from './BlueprintCover.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  length: string;
+  readTime: string;
+  thumbnailTone: 'navy' | 'teal' | 'green' | 'gold' | 'charcoal';
+  thumbnailFile?: string;
+}
+
+const { title, subtitle, length, readTime, thumbnailTone, thumbnailFile } = Astro.props;
+---
+
+<section class="bg-paper py-[var(--space-section)] px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+      <!-- Left: text column -->
+      <div>
+        <!-- Eyebrow -->
+        <p class="text-sm font-semibold uppercase tracking-wider text-teal mb-5">
+          Free blueprint; {length} · {readTime}
+        </p>
+
+        <!-- Title -->
+        <h1
+          class="font-serif text-navy leading-tight mb-5"
+          style="font-size: var(--fs-h1);"
+        >
+          {title}
+        </h1>
+
+        <!-- Subtitle / promise -->
+        <p class="text-muted leading-relaxed mb-6" style="font-size: var(--fs-body);">
+          {subtitle}
+        </p>
+
+        <!-- Credibility tag -->
+        <p class="text-sm text-ink font-medium border-l-2 border-gold pl-3">
+          by Mike Johnson — 35-year teacher, 20 years in learning support
+        </p>
+      </div>
+
+      <!-- Right: book cover -->
+      <div class="flex justify-center md:justify-end">
+        <div class="w-full max-w-[380px]">
+          <BlueprintCover
+            thumbnailFile={thumbnailFile}
+            thumbnailTone={thumbnailTone}
+            label={title}
+            width={460}
+            height={580}
+            class="w-full rounded-md object-cover"
+          />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

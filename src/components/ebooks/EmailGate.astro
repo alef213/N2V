@@ -1,0 +1,150 @@
+---
+import linksJson from '../../data/links.json';
+
+interface Props {
+  slug: string;
+  /** Which instance is this — reserved for future multi-gate layouts */
+  instance?: 'primary' | 'secondary';
+}
+
+const { slug, instance = 'primary' } = Astro.props;
+
+/*
+ * Email-collection flow:
+ *
+ *   1. User types email and submits the form.
+ *   2. The form posts to Substack's free-subscribe endpoint via a hidden
+ *      iframe (target=...). Substack receives the POST and adds the email
+ *      to Mike's reading list. The response loads in the hidden iframe — the
+ *      user never sees it.
+ *   3. A small inline script on form submit waits 800 ms (enough for the POST
+ *      to leave the browser) then navigates to /blueprints/[slug]/thanks/.
+ *   4. That thanks page renders the download link for the corresponding
+ *      checklist PDF.
+ *
+ * Cross-origin form POSTs are allowed by browsers (the iframe trick).
+ * CORS only blocks cross-origin reading, not posting. We don't need to read
+ * Substack's response — we trust the POST went through.
+ *
+ * The Substack publication URL lives in src/data/links.json so the embed
+ * endpoint can be swapped in one place if Mike's publication changes.
+ */
+
+const substackEndpoint = `${linksJson.substackUrl.replace(/\/$/, '')}/api/v1/free?nojs=true`;
+const thanksUrl = `/blueprints/${slug}/thanks/`;
+const formId = `email-gate-${instance}-${slug}`;
+const iframeName = `substack-target-${instance}-${slug}`;
+const inputId = `email-input-${formId}`;
+---
+
+<section class="bg-navy text-offwhite py-[var(--space-section)] px-4">
+  <div class="max-w-xl mx-auto text-center">
+
+    <!-- Heading -->
+    <h2
+      class="font-serif text-offwhite leading-tight mb-3"
+      style="font-size: var(--fs-h2);"
+    >
+      Get the Checklist.
+    </h2>
+
+    <!-- Sub-line -->
+    <p class="opacity-75 mb-8 max-w-lg mx-auto" style="font-size: var(--fs-body);">
+      Drop your email and we'll send you straight to the download. You'll also
+      get one short Sunday essay from Mike — unsubscribe anytime.
+    </p>
+
+    <!-- Email form: posts email to Substack via the hidden iframe below,
+         then JS redirects the user to the thanks page (where the download
+         link lives). -->
+    <form
+      id={formId}
+      action={substackEndpoint}
+      method="POST"
+      target={iframeName}
+      data-thanks-url={thanksUrl}
+      class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+    >
+      <label for={inputId} class="sr-only">Your email address</label>
+      <input
+        id={inputId}
+        type="email"
+        name="email"
+        placeholder="your@email.com"
+        autocomplete="email"
+        required
+        class="
+          flex-1 min-w-0 px-4 py-3
+          bg-paper text-navy placeholder-muted
+          rounded border-2 border-transparent
+          focus:outline-none focus:border-gold
+          text-base
+        "
+        style="font-size: var(--fs-body);"
+      />
+      <button
+        type="submit"
+        class="
+          shrink-0 px-6 py-3
+          bg-gold text-navy font-semibold rounded
+          border-b-2 border-transparent
+          hover:border-navy transition-colors duration-200
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2
+          whitespace-nowrap
+        "
+        style="font-size: var(--fs-body);"
+      >
+        Get the Checklist
+      </button>
+    </form>
+
+    <!-- Hidden iframe — receives the form submission so the user stays on
+         the page (the redirect to /thanks is handled by the script below). -->
+    <iframe
+      name={iframeName}
+      title="Subscription handler (hidden)"
+      sandbox="allow-forms allow-scripts allow-same-origin"
+      style="display:none;width:0;height:0;border:0;"
+      aria-hidden="true"
+    ></iframe>
+
+    <!-- Trust micro-lines -->
+    <div
+      class="mt-5 flex flex-col sm:flex-row sm:justify-center sm:gap-6 gap-1 opacity-60"
+      style="font-size: var(--fs-small);"
+    >
+      <span>No spam</span>
+      <span class="hidden sm:inline" aria-hidden="true">·</span>
+      <span>Sunday essays</span>
+      <span class="hidden sm:inline" aria-hidden="true">·</span>
+      <span>Unsubscribe in one click</span>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // After the form submits to Substack via the hidden iframe, navigate the
+  // top window to the thanks page (where the download link lives). Read the
+  // target URL off the form's data-thanks-url attribute so each gate routes
+  // to the correct slug.
+  document.querySelectorAll('form[data-thanks-url]').forEach((node) => {
+    const form = node as HTMLFormElement;
+    form.addEventListener('submit', () => {
+      const url = form.getAttribute('data-thanks-url');
+      if (!url) return;
+      // Disable the submit button to signal the in-flight state.
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+      }
+      // Give the cross-origin POST ~800 ms to leave the browser before the
+      // page navigates away. The form action is the iframe target, so the
+      // redirect doesn't interrupt the in-flight request.
+      setTimeout(() => {
+        window.location.href = url;
+      }, 800);
+    });
+  });
+</script>

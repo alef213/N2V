@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
+
+:root {
+  /* Base palette (80–90% usage) */
+  --c-navy:     #0F2847;
+  --c-charcoal: #1E2A36;
+  --c-offwhite: #F7F5F0;
+  --c-paper:    #FBFAF6;
+  --c-ink:      #0B1A2D;
+  --c-muted:    #5B6573;
+
+  /* Accent palette (10–20% usage — use sparingly) */
+  --c-teal:  #2D8F8F;
+  --c-green: #6B9B7A;
+  --c-gold:  #C9A96E;
+
+  /* Typography */
+  --font-serif: 'Source Serif 4', ui-serif, Georgia, serif;
+  --font-sans:  'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid type scale */
+  --fs-display: clamp(2.5rem, 6vw, 4.5rem);
+  --fs-h1:      clamp(2rem, 4vw, 3rem);
+  --fs-h2:      clamp(1.5rem, 2.75vw, 2.25rem);
+  --fs-h3:      1.25rem;
+  --fs-body:    1.0625rem;
+  --fs-small:   0.9375rem;
+
+  /* Spacing rhythm */
+  --space-section: clamp(4rem, 10vw, 8rem);
+  --space-block:   clamp(1.5rem, 3vw, 2.5rem);
+
+  /* Border radii */
+  --radius:    0.75rem;
+  --radius-lg: 1.25rem;
+}
+
+/* ─── Base Styles (layered so Tailwind utilities can override) ──────────── */
+
+@layer base {
+  html {
+    background: var(--c-paper);
+    color: var(--c-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    color: var(--c-navy);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  /* Source Serif 4 — clean academic serif. No "wonk" / quirky letterforms
+     (was the previous problem with Fraunces — descending f tails read as
+     glitches). Standard ligatures only. */
+  .font-serif,
+  h1, h2, h3, h4,
+  blockquote,
+  [class*='font-serif'] {
+    font-variant-ligatures: common-ligatures no-discretionary-ligatures no-historical-ligatures;
+  }
+}
+
+/* ─── Tailwind v4 Theme — generates utility classes ─────────────────────── */
+
+@theme {
+  /* Colors — bg-navy, text-gold, border-teal, etc. */
+  --color-navy:     #0F2847;
+  --color-charcoal: #1E2A36;
+  --color-offwhite: #F7F5F0;
+  --color-paper:    #FBFAF6;
+  --color-ink:      #0B1A2D;
+  --color-muted:    #5B6573;
+  --color-teal:     #2D8F8F;
+  --color-green:    #6B9B7A;
+  --color-gold:     #C9A96E;
+
+  /* Fonts — font-serif, font-sans */
+  --font-serif: 'Source Serif 4', ui-serif, Georgia, serif;
+  --font-sans:  'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Border radius — rounded, rounded-lg */
+  --radius-DEFAULT: 0.75rem;
+  --radius-lg:      1.25rem;
+}

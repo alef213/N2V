@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import VideosHero from '../components/videos/VideosHero.astro';
+import VideoGrid from '../components/videos/VideoGrid.astro';
+import VideosCta from '../components/videos/VideosCta.astro';
+import linksData from '../data/links.json';
+import { fetchYoutubeVideos, type VideoEntry } from '../lib/feeds.ts';
+
+// ─── Fallback videos (only render when the live feed is empty/unreachable) ─
+const FALLBACK_VIDEOS: VideoEntry[] = [
+  { title: "The three-loop system in 5 minutes",            duration: "5:14",  published: "2026-04-19", videoId: "#" },
+  { title: "How to install your first habit (for parents)", duration: "8:02",  published: "2026-04-12", videoId: "#" },
+  { title: "Working with ADHD at the kitchen table",        duration: "11:47", published: "2026-04-05", videoId: "#" },
+  { title: "Dyslexia: what the school won't tell you",      duration: "9:30",  published: "2026-03-29", videoId: "#" },
+  { title: "Why 'self-directed' isn't what you think",      duration: "6:58",  published: "2026-03-22", videoId: "#" },
+  { title: "Teaching your kid to fail on purpose",          duration: "7:41",  published: "2026-03-15", videoId: "#" },
+];
+
+const { youtubeChannelId, youtubeChannelUrl } = linksData;
+const liveVideos = await fetchYoutubeVideos(youtubeChannelId);
+const videos: VideoEntry[] = liveVideos.length > 0 ? liveVideos.slice(0, 12) : FALLBACK_VIDEOS;
+const source: 'rss' | 'fallback' = liveVideos.length > 0 ? 'rss' : 'fallback';
+---
+
+<Layout
+  title="Videos — Neurodivergent → Valedictorian"
+  description="Watch Mike Johnson explain the three-loop learning system through short explainers, parent walkthroughs, and real classroom breakdowns."
+>
+  <VideosHero channelUrl={youtubeChannelUrl} />
+  <VideoGrid videos={videos} source={source} channelUrl={youtubeChannelUrl} />
+  <VideosCta channelUrl={youtubeChannelUrl} />
+</Layout>

@@ -1,0 +1,99 @@
+---
+import links from '../data/links.json';
+
+const navLinks = [
+  { label: 'About',        href: '/about' },
+  { label: 'Blog',         href: '/blog' },
+  { label: 'Videos',       href: '/videos' },
+  { label: 'Free Blueprints', href: '/blueprints' },
+];
+---
+
+<footer class="bg-charcoal text-offwhite py-16 px-4">
+  <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+
+    <!-- Column 1: Brand paragraph -->
+    <div class="flex flex-col gap-4">
+      <p class="font-serif text-offwhite font-semibold leading-tight">
+        <span class="text-2xl tracking-tight">N2V</span>
+        <span class="block text-xs uppercase tracking-[0.18em] text-muted mt-1">
+          Neurodivergent&nbsp;→&nbsp;Valedictorian
+        </span>
+      </p>
+      <p class="text-muted text-sm leading-relaxed">
+        A proven learning system built by 35 years in education and 20 years
+        supporting neurodivergent learners. Parents use it to turn struggling
+        students into self-directed, confident achievers.
+      </p>
+      <div class="flex gap-4 mt-2">
+        <a
+          href={links.substackUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-muted hover:text-gold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+        >
+          Substack
+        </a>
+        <a
+          href={links.youtubeChannelUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-muted hover:text-gold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+        >
+          YouTube
+        </a>
+      </div>
+      <a
+        href="mailto:info@n2ved.com"
+        class="text-muted hover:text-gold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded"
+      >
+        info@n2ved.com
+      </a>
+    </div>
+
+    <!-- Column 2: Nav links -->
+    <nav aria-label="Footer navigation">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gold mb-4">
+        Explore
+      </p>
+      <ul class="flex flex-col gap-2">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-sm text-muted hover:text-offwhite transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offwhite rounded"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Column 3: Newsletter CTA placeholder -->
+    <div class="flex flex-col gap-4">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gold">
+        Free Blueprints
+      </p>
+      <p class="text-sm text-muted leading-relaxed">
+        Get practical guides for supporting your neurodivergent learner —
+        no fluff, no jargon.
+      </p>
+      <a
+        href="/blueprints"
+        class="inline-block bg-navy text-offwhite text-sm font-semibold px-5 py-2.5 rounded
+               border-b-2 border-transparent hover:border-gold transition-colors duration-200
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal
+               w-fit"
+      >
+        Explore our Free Blueprints →
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Copyright bar -->
+  <div class="max-w-5xl mx-auto mt-12 pt-6 border-t border-navy text-center">
+    <p class="text-muted text-sm">© 2026 N2V — Mike Johnson. All rights reserved.</p>
+  </div>
+</footer>

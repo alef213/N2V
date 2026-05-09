@@ -1,0 +1,71 @@
+---
+import Button from '../Button.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../../../public/images/homepage-hero.jpg';
+---
+
+<section
+  class="bg-paper py-[var(--space-section)] px-4"
+  style="background: linear-gradient(160deg, color-mix(in srgb, #0F2847 8%, #FBFAF6) 0%, #FBFAF6 38%);"
+>
+  <div class="max-w-5xl mx-auto">
+    <!-- 12-col grid: 7/5 desktop, stacked mobile -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <!-- Left column (7/12) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+
+        <!-- Eyebrow -->
+        <p class="text-sm font-semibold uppercase tracking-widest text-teal">
+          A proven learning system
+        </p>
+
+        <!-- H1 display headline -->
+        <h1
+          class="font-serif text-navy leading-tight"
+          style="font-size: var(--fs-display);"
+        >
+          Every child is exceptional. The school system just&nbsp;doesn't know what to do with yours, unless you tell them.
+        </h1>
+
+        <!-- Sub-headline -->
+        <p
+          class="text-charcoal leading-relaxed max-w-xl"
+          style="font-size: var(--fs-h3);"
+        >
+          I've spent 35&nbsp;years turning neurodivergent kids — ADHD, autism, dyslexia, anxiety — into
+          independent, self-directed learners. Here's the system I built to do it at home.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap gap-4 items-center">
+          <Button variant="primary" size="lg" href="/blueprints">
+            Explore our Free Blueprints
+          </Button>
+          <Button variant="ghost" href="/about">
+            Meet Mike
+          </Button>
+        </div>
+
+        <!-- Trust strip -->
+        <p class="text-muted text-sm tracking-wide">
+          35&nbsp;years in the classroom &middot; 20&nbsp;years in learning support &middot; 1,000+&nbsp;families
+        </p>
+
+      </div>
+
+      <!-- Right column (5/12) -->
+      <div class="lg:col-span-5 flex justify-center lg:justify-end">
+        <Image
+          src={heroImage}
+          alt="Mike Johnson working with a neurodivergent student"
+          width={560}
+          height={640}
+          quality={88}
+          class="rounded object-cover w-full max-w-[560px]"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>

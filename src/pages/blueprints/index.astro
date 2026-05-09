@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import EbooksHero from '../../components/ebooks/EbooksHero.astro';
+import EbookList from '../../components/ebooks/EbookList.astro';
+---
+
+<Layout
+  title="Free Blueprints — Mike Johnson"
+  description="Two free blueprints — article + checklist — to help you start building a learning approach at home for your neurodivergent child. Written by Mike Johnson, 35-year educator."
+>
+  <EbooksHero />
+  <EbookList />
+
+  <!-- Chooser nudge -->
+  <section class="bg-paper py-8 px-4">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="text-muted" style="font-size: var(--fs-body);">
+        Pick whichever one fits your kid's biggest hurdle right now.
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,34 @@
+---
+import Button from '../Button.astro';
+import links from '../../data/links.json';
+---
+
+<section class="bg-offwhite py-[var(--space-section)] px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="max-w-2xl">
+
+      <!-- Heading -->
+      <h2
+        class="font-serif text-navy leading-tight mb-4"
+        style="font-size: var(--fs-h2);"
+      >
+        Weekly Notes from the Classroom
+      </h2>
+
+      <!-- Sub-copy -->
+      <p
+        class="text-charcoal leading-relaxed mb-8"
+        style="font-size: var(--fs-body);"
+      >
+        Practical tactics, habit scripts, and transformation stories —
+        in your inbox on Sundays.
+      </p>
+
+      <!-- CTA -->
+      <Button variant="ghost" href={links.substackUrl}>
+        Read on Substack
+      </Button>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlogHero from '../components/blog/BlogHero.astro';
+import PostGrid from '../components/blog/PostGrid.astro';
+import BlogCta from '../components/blog/BlogCta.astro';
+import linksJson from '../data/links.json';
+import { fetchSubstackPosts, type Post } from '../lib/feeds.ts';
+
+const substackUrl: string = linksJson.substackUrl;
+const newsletterEmbedUrl: string = linksJson.newsletterEmbedUrl;
+
+// ─── Fallback posts (only render when the live RSS is empty/unreachable) ──
+const FALLBACK_POSTS: Post[] = [
+  {
+    title: "The three-loop system, explained in 600 words",
+    excerpt:
+      "Discover. Build. Engineer. Why every neurodivergent kid I've taught needed the same three-step framework — regardless of diagnosis.",
+    pubDate: "2026-04-18",
+    link: "#",
+  },
+  {
+    title: "Why the IEP isn't going to save your kid (and what does)",
+    excerpt:
+      "The Individualized Education Plan is a legal instrument, not a learning system. Here's the parent-home counterpart that actually moves the needle.",
+    pubDate: "2026-04-11",
+    link: "#",
+  },
+  {
+    title: "How to install a habit in a kid who hates habits",
+    excerpt:
+      "ADHD and routine feel like opposites. They aren't. The trick is building routines that use the ADHD brain instead of fighting it.",
+    pubDate: "2026-04-04",
+    link: "#",
+  },
+  {
+    title: "The dyslexic student who became an engineer",
+    excerpt:
+      "He couldn't read at 11. At 28 he signs off bridge designs. The path between those two facts is a system — not a miracle.",
+    pubDate: "2026-03-28",
+    link: "#",
+  },
+  {
+    title: "What 'self-directed learner' actually means (it's not independence)",
+    excerpt:
+      "Parents hear the phrase and picture a 10-year-old scheduling their own homework. That's not it. Here's what it actually looks like.",
+    pubDate: "2026-03-21",
+    link: "#",
+  },
+  {
+    title: "Failure as a tool: teaching kids to study their own struggle",
+    excerpt:
+      "The valedictorians I've taught weren't the ones who didn't fail. They were the ones who learned to treat failure like data.",
+    pubDate: "2026-03-14",
+    link: "#",
+  },
+];
+
+// Only show the live feed once Mike has at least 3 substantive posts.
+// Today his Substack only has placeholder/test posts ("Test Article",
+// "TEST"); rendering those as the entire blog grid makes the page look
+// broken. Threshold also filters posts whose title is empty or trivially
+// short.
+const MIN_LIVE_POSTS = 3;
+const MIN_TITLE_LEN = 10;
+
+const liveposts = (await fetchSubstackPosts(substackUrl)).filter(
+  (p) => p.title.trim().length >= MIN_TITLE_LEN,
+);
+const useLive = liveposts.length >= MIN_LIVE_POSTS;
+const posts: Post[] = useLive ? liveposts : FALLBACK_POSTS;
+const source: 'rss' | 'fallback' = useLive ? 'rss' : 'fallback';
+---
+
+<Layout
+  title="Blog — Neurodivergent → Valedictorian"
+  description="Weekly essays by Mike Johnson on building self-directed learners. Habits, mindset shifts, and parent-side moves that actually work."
+>
+  <BlogHero substackUrl={substackUrl} />
+  <PostGrid posts={posts} source={source} />
+  <BlogCta substackUrl={substackUrl} embedUrl={newsletterEmbedUrl} />
+</Layout>

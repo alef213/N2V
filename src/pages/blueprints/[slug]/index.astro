@@ -1,0 +1,126 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import FunnelHero from '../../../components/ebooks/FunnelHero.astro';
+import EmailGate from '../../../components/ebooks/EmailGate.astro';
+import WhatsInside from '../../../components/ebooks/WhatsInside.astro';
+import WhoItsFor from '../../../components/ebooks/WhoItsFor.astro';
+import FunnelFaq from '../../../components/ebooks/FunnelFaq.astro';
+
+export async function getStaticPaths() {
+  const ebooks = await getCollection('ebooks');
+  return ebooks.map((ebook) => ({
+    params: { slug: ebook.id },
+    props: { ebook },
+  }));
+}
+
+const { ebook } = Astro.props;
+const { title, subtitle, length, readTime, thumbnailTone, highlights, thumbnailFile } = ebook.data;
+const slug = ebook.id;
+const { Content } = await render(ebook);
+
+const bullets: string[] = highlights && highlights.length > 0 ? highlights : [];
+---
+
+<Layout
+  title={`${title} — N2V`}
+  description={`${subtitle}. A free article + checklist by Mike Johnson, 35-year educator in neurodivergent learning support.`}
+>
+  <!-- READER-MAGNET PATTERN:
+       The visitor reads the full article + the "what's in the kit" pitch FIRST,
+       THEN opts in at the bottom. The only email gate is at the end. -->
+
+  <!-- 1. Hero (title + thumbnail + credibility tag) -->
+  <FunnelHero
+    title={title}
+    subtitle={subtitle}
+    length={length}
+    readTime={readTime}
+    thumbnailTone={thumbnailTone}
+    thumbnailFile={thumbnailFile}
+  />
+
+  <!-- 2. Article body — rendered from the markdown content collection -->
+  <section class="bg-paper py-[var(--space-section)] px-4">
+    <article class="article-body max-w-2xl mx-auto">
+      <Content />
+    </article>
+  </section>
+
+  <style>
+    .article-body :global(h2) {
+      font-family: 'Fraunces', serif;
+      color: var(--color-navy);
+      font-size: var(--fs-h3);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-top: 2.75rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .article-body :global(h2:first-child) {
+      margin-top: 0;
+    }
+    .article-body :global(p) {
+      color: var(--color-charcoal);
+      font-size: var(--fs-body);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+    .article-body :global(ul) {
+      list-style: none;
+      padding-left: 0;
+      margin: 1rem 0 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .article-body :global(li) {
+      color: var(--color-charcoal);
+      font-size: var(--fs-body);
+      line-height: 1.6;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    .article-body :global(li::before) {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.65em;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 9999px;
+      background: var(--color-teal);
+    }
+    .article-body :global(strong) {
+      color: var(--color-navy);
+      font-weight: 600;
+    }
+    .article-body :global(blockquote) {
+      border-left: 3px solid var(--color-gold);
+      padding: 0.25rem 0 0.25rem 1.25rem;
+      margin: 1.5rem 0;
+      color: var(--color-charcoal);
+      font-style: normal;
+    }
+    .article-body :global(blockquote p) {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+
+  <!-- 3. What's in the kit (uses frontmatter highlights) -->
+  {bullets.length > 0 && (
+    <WhatsInside length={length} subtitle={subtitle} bullets={bullets} />
+  )}
+
+  <!-- 4. Who it's for -->
+  <WhoItsFor />
+
+  <!-- 5. FAQ -->
+  <FunnelFaq />
+
+  <!-- 6. EmailGate — the ONE gate, at the bottom of the page. -->
+  <EmailGate slug={slug} instance="primary" />
+
+</Layout>

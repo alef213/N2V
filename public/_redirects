@@ -1,0 +1,21 @@
+# Cloudflare Pages redirects — rename /ebooks → /blueprints (2026-05-08)
+# Rules evaluate top-to-bottom; first match wins. Specific rules MUST precede the wildcard.
+
+# Legacy 3-ebook slugs (pre-May-7 brief) — point at the closest current blueprint.
+/ebooks/habit-blueprint       /blueprints/strength-based/       301
+/ebooks/habit-blueprint/      /blueprints/strength-based/       301
+/ebooks/gift-audit            /blueprints/strength-based/       301
+/ebooks/gift-audit/           /blueprints/strength-based/       301
+/ebooks/failure-as-fuel       /blueprints/iep-launchkit/        301
+/ebooks/failure-as-fuel/      /blueprints/iep-launchkit/        301
+
+# Current blueprint slugs (renamed from /ebooks/* → /blueprints/*)
+/ebooks/strength-based        /blueprints/strength-based/       301
+/ebooks/strength-based/       /blueprints/strength-based/       301
+/ebooks/iep-launchkit         /blueprints/iep-launchkit/        301
+/ebooks/iep-launchkit/        /blueprints/iep-launchkit/        301
+
+# Listing + everything else under /ebooks (fallback wildcard)
+/ebooks                       /blueprints                       301
+/ebooks/                      /blueprints/                      301
+/ebooks/*                     /blueprints/:splat                301

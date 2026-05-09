@@ -1,0 +1,110 @@
+---
+import Button from '../Button.astro';
+import PlaceholderImage from '../PlaceholderImage.astro';
+
+const steps = [
+  {
+    number: '01',
+    label: 'DIAGNOSIS',
+    tone: 'navy' as const,
+    heading: 'Understand how your child\'s brain actually works.',
+    body: 'Once your child has been assessed as someone who is neurodivergent, then the transformation can begin.',
+  },
+  {
+    number: '02',
+    label: 'DISCOVER',
+    tone: 'gold' as const,
+    heading: 'Identify what your child is actually good at.',
+    body: 'Not school-good. Human-good. We map the cognitive wiring — the spatial reasoning, the pattern recognition, the verbal precision — that the report card never captures.',
+  },
+  {
+    number: '03',
+    label: 'BUILD',
+    tone: 'green' as const,
+    heading: 'Install habits and routines at home.',
+    body: 'Translate those gifts into academic and life skills through a repeatable home structure — one that works with your child\'s brain instead of fighting it.',
+  },
+  {
+    number: '04',
+    label: 'TRANSFORMATION',
+    tone: 'teal' as const,
+    heading: 'Shift from dependent to self-directed.',
+    body: 'The final stage: your child internalises the system. Failure becomes a tool, not a threat. They own their learning — with or without a teacher in the room.',
+  },
+] as const;
+---
+
+<section class="bg-offwhite py-[var(--space-section)] px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Eyebrow + heading -->
+    <header class="mb-[var(--space-block)] max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-widest text-teal mb-3">
+        The System
+      </p>
+      <h2
+        class="font-serif text-navy leading-tight mb-4"
+        style="font-size: var(--fs-h2);"
+      >
+        How Neurodivergent Kids Become Self-Directed Learners
+      </h2>
+      <p class="text-charcoal leading-relaxed" style="font-size: var(--fs-body);">
+        Every student I've taken from struggling to valedictorian followed the same four-step loop.
+      </p>
+    </header>
+
+    <!-- Steps: 2x2 on desktop, vertical on mobile -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
+      {steps.map((step) => (
+        <div class="flex flex-col gap-4">
+
+          <!-- Step image (clean colored box, no watermark) -->
+          <div class="rounded overflow-hidden">
+            <PlaceholderImage w={480} h={270} label={step.label} tone={step.tone} showWatermark={false} />
+          </div>
+
+          <!-- Step number + label -->
+          <div class="flex items-baseline gap-3">
+            <span
+              class="font-serif font-semibold text-muted"
+              style="font-size: var(--fs-small);"
+            >
+              {step.number}
+            </span>
+            <span
+              class="font-semibold uppercase tracking-widest text-navy"
+              style="font-size: var(--fs-small);"
+            >
+              {step.label}
+            </span>
+          </div>
+
+          <!-- Step heading -->
+          <h3
+            class="font-serif text-navy leading-snug"
+            style="font-size: var(--fs-h3);"
+          >
+            {step.heading}
+          </h3>
+
+          <!-- Step body -->
+          <p class="text-charcoal leading-relaxed" style="font-size: var(--fs-body);">
+            {step.body}
+          </p>
+
+        </div>
+      ))}
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="border-t border-offwhite pt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <p class="text-charcoal" style="font-size: var(--fs-body);">
+        Explore our blueprints. They're free.
+      </p>
+      <Button variant="primary" href="/blueprints">
+        Explore our Free Blueprints
+      </Button>
+    </div>
+
+  </div>
+</section>
