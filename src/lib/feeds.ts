@@ -89,7 +89,11 @@ export async function fetchSubstackPosts(substackUrl: string): Promise<Post[]> {
       return [];
     }
     const xml = await res.text();
-    return parseSubstackRss(xml);
+    const posts = parseSubstackRss(xml);
+    console.error('[SUBSTACK DEBUG] status:', res.status, 'bytes:', xml.length, 'posts:', posts.length);
+    console.error('[SUBSTACK DEBUG] content-type:', res.headers.get('content-type'));
+    console.error('[SUBSTACK DEBUG] first 500 chars:', xml.slice(0, 500));
+    return posts;
   } catch (err) {
     console.error('[SUBSTACK FETCH FAILED]', err);
     return [];
