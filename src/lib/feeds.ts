@@ -151,9 +151,15 @@ export async function fetchYoutubeVideos(
 
   try {
     const res = await fetch(
-      `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
-      { signal: controller.signal },
-    );
+  `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`,
+  {
+    signal: controller.signal,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (compatible; N2VBot/1.0; +https://n2ved.com)',
+      'Accept': 'application/atom+xml, application/xml, text/xml, */*',
+    },
+  },
+);
     if (!res.ok) return [];
     const xml = await res.text();
     return parseYoutubeAtom(xml);
