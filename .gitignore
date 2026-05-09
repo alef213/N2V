@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # ad-hoc working folder for downloaded source materials (intake docs, attachments)
 _inbox/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
