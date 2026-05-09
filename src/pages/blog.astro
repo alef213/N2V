@@ -55,18 +55,12 @@ const FALLBACK_POSTS: Post[] = [
   },
 ];
 
-// Only show the live feed once Mike has at least 3 substantive posts.
-// Today his Substack only has placeholder/test posts ("Test Article",
-// "TEST"); rendering those as the entire blog grid makes the page look
-// broken. Threshold also filters posts whose title is empty or trivially
-// short.
-const MIN_LIVE_POSTS = 3;
 const MIN_TITLE_LEN = 10;
 
 const liveposts = (await fetchSubstackPosts(substackUrl)).filter(
   (p) => p.title.trim().length >= MIN_TITLE_LEN,
 );
-const useLive = liveposts.length >= MIN_LIVE_POSTS;
+const useLive = liveposts.length > 0;
 const posts: Post[] = useLive ? liveposts : FALLBACK_POSTS;
 const source: 'rss' | 'fallback' = useLive ? 'rss' : 'fallback';
 ---
