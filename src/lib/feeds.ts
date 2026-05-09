@@ -84,10 +84,14 @@ export async function fetchSubstackPosts(substackUrl: string): Promise<Post[]> {
         'Accept': 'application/rss+xml, application/xml, text/xml, */*',
       },
     });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.error('[SUBSTACK FETCH] HTTP', res.status, res.statusText);
+      return [];
+    }
     const xml = await res.text();
     return parseSubstackRss(xml);
-  } catch {
+  } catch (err) {
+    console.error('[SUBSTACK FETCH FAILED]', err);
     return [];
   } finally {
     clearTimeout(timer);
