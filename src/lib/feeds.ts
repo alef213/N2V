@@ -26,7 +26,7 @@ export interface VideoEntry {
   thumbnailUrl?: string;
 }
 
-const FETCH_TIMEOUT_MS = 5000;
+const FETCH_TIMEOUT_MS = 15000;
 
 // ─── Substack RSS (parse + fetch) ─────────────────────────────────────────────
 
